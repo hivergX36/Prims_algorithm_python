@@ -34,12 +34,30 @@ class Prim:
         print("Number of edges:", self.NbEdges)
         print("Adjacency List:")
         for pred, succ in self.adjacency_list.items():
-            print(f"{pred}: {succ[0]},{succ[1]}")
+            print(f"{pred}: {succ}")
         print("Adjacency Matrix:")
         for row in self.adjacency_Matrix:
             print(row)
             
             
-    def resolve(self, start_vertex):
-        visited = [False] * self.NbVertices
-        min_heap = [(0, start_vertex)]
+    def resolve(self):
+        cost = 0 
+        self.path = [None for i in range(self.NbVertices)]
+        self.cost = [float('inf') for i in range(self.NbVertices)]
+        fifo = [i for i in range(self.NbVertices)]
+        while len(fifo) > 0:
+            vertex = fifo.pop(0)
+            print("Processing vertex:", vertex)
+            print("Current cost:", cost)
+            for succ, weight in self.adjacency_list[vertex]:
+                cost = self.cost[succ]
+                print(f"Checking edge {vertex} -> {succ} with weight {weight}")
+                if weight < cost:
+                    cost = weight
+                    print(f"Updating cost for vertex {succ} to {cost}")
+                    self.path[succ] = vertex
+                    self.cost[succ] = weight
+        
+    def display_path(self):
+        print("Path:", self.path)
+        print("Cost:", self.cost)
